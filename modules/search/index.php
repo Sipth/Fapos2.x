@@ -44,7 +44,7 @@ class SearchModule extends Module {
 	/**
 	 * @var array
 	 */
-	public $tables = array('posts', 'stat', 'question', 'games', 'news', 'loads');
+	public $tables = array('posts', 'stat', 'news', 'loads');
 
 	/**
 	 * @var boolean
