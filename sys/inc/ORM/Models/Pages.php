@@ -2,12 +2,12 @@
 /*---------------------------------------------\
 |											   |
 | @Author:       Andrey Brykin (Drunya)        |
-| @Version:      1.0                           |
+| @Version:      1.2                           |
 | @Project:      CMS                           |
 | @package       CMS Fapos                     |
 | @subpackege    Pages Model                   |
-| @copyright     ©Andrey Brykin 2010-2012      |
-| @last mod      2012/08/12                    |
+| @copyright     ©Andrey Brykin 2010-2013      |
+| @last mod      2013/07/16                    |
 |----------------------------------------------|
 |											   |
 | any partial or not partial extension         |
@@ -27,36 +27,132 @@
 class PagesModel extends FpsModel
 {
 	public $Table = 'pages';
+	
+	private static $pages = array();
 
     protected $RelatedEntities;
 
+	
+	public function __construct()
+	{
+		parent::__construct();
+		if (empty(self::$pages)) $this->getPages();
+		
+	}
+	
+	
+	private function getPages()
+	{
+		self::$pages = $this->getAllTree(array('id', 'url', 'path'));
+	}
+	
+	
+	public function buildUrl($page_id, $pages = null, $prefix = '') 
+	{ 
+		$url = '';
+		if ($pages === null) $pages = self::$pages;
+		
+		$targ_page = $this->getById($page_id);
+		if (empty($targ_page) || !$targ_page->getPublish()) return $page_id;
+		
+		
+		
+		$page_path = $targ_page->getPath();
+		$ids = explode('.', $page_path);
+		
+		
+		foreach ($ids as $k => $v) {
+			if ($v == 1 || empty($v)) unset($ids[$k]);
+		}
+		
+		
+		
+		if (!empty($ids)) {
+			foreach ($ids as $id) {
+				$need_page = $this->getPageById($id, $pages);
+				if ($need_page) $url .= '/' . $need_page->getUrl();
+			}
+		} else {
+			$url = '/';
+		}
+		
+		
+		$url = (!empty($url)) ? trim($url, '/') . '/' . $targ_page->getUrl() : $page_id;
+		
+		return trim($url, '/');
+	}
+	
+	
+	/**
+	 * Recursive
+	 */
+	private function getPageById($id, $pages) {
+		
+		if (!empty($pages)) {
+			foreach ($pages as $page) {
+				
+				if ($id == $page->getId()) {
+					return $page;
+				}
+				
+				
+				$sub = $page->getSub();
+				if (empty($sub)) continue;
+				$need_page = $this->getPageById($id, $sub);
+				if ($need_page) return $need_page;
+			}
+		}
+		return false;
+	}
 
 
 	/**
-     * @param $url
+     * @param $id
      * @return bool
      */
 	public function getByUrl($url)
 	{
-        $Register = Register::getInstance();
-		$entities = $this->getDbDriver()->select($this->Table, DB_FIRST, array(
-			'cond' => array(
-				'url' => $url
-			)
+		$page_id = $this->searchInTreeByUrl($url, self::$pages);
+		
+        $page = $this->getCollection(array(
+			'id' => $page_id,
+			'publish' => 1,
 		));
+		
+		$page = (!empty($page)) ? $page[0] : false;
+		
+		return $page;
+	}
+	
+	
+	private function searchInTreeByUrl($url, $pages)
+	{
+		$url = explode('/', $url);
 
-		if ($entities && count($entities)) {
-            $entities = $this->getAllAssigned($entities);
-			$entityClassName = $Register['ModManager']->getEntityNameFromModel(get_class($this));
-			$entity = new $entityClassName($entities[0]);
-			return (!empty($entity)) ? $entity : false;
+		if (!empty($pages)) {
+			foreach ($pages as $page) {
+			
+				if ($url[0] == $page->getUrl() || $url[0] == $page->getId()) {
+				
+					if (is_array($url) && count($url) > 1) {
+						unset($url[0]);
+						$url = implode('/', $url);
+						
+						return $this->searchInTreeByUrl($url, $page->getSub());
+						
+					} else {
+						return $page->getId();
+					}
+				}
+			}
 		}
 		return false;
 	}
 	
 	
-	public function getTree($id)
+	public function getTree($id, $fields = array('`a`.*'))
 	{
+		if (empty($fields)) $fields = array('`a`.*');
 		$params = array(
 			'joins' => array(
 				array(
@@ -66,12 +162,10 @@ class PagesModel extends FpsModel
 					'cond' => array("`b`.`id` = '" . $id . "'"),
 				),
 			),
-			'cond' => array("`a`.`path` LIKE CONCAT(`b`.`path`, '%')"),
+			'cond' => array("`a`.`path` LIKE CONCAT(`b`.`path`, `b`.`id`,'.%')"),
 			'alias' => 'a',
 			'order' => '`a`.`path`',
-			'fields' => array(
-				"`a`.*",
-			),
+			'fields' => $fields,
 		);
 		$tree = $this->getDbDriver()->select($this->Table, DB_ALL, $params);
 		
@@ -83,6 +177,73 @@ class PagesModel extends FpsModel
 		
 		return $tree;
 	}
+	
+	
+	public function getAllTree($fields = "*")
+	{
+		$tree = $this->getCollection(array(
+			"`id` != 1",
+			"publish" => 1,
+		), $fields);
+		
+		if (!empty($tree)) {
+			$tree = $this->buildTree($tree);
+		}
+		
+		return $tree;
+	}
+	
+	
+	/**
+	 * Get array with tree ierarhy
+	 */
+	private function buildTree($pages, $tree = array())
+	{
+		if (!empty($tree)) {
+			foreach ($tree as $tk => $tv) {
+			
+			
+				$sub = array();
+				foreach ($pages as $pk => $pv) {
+				
+				
+					$path = $tv->getPath();
+					if ('.' === $path) $path = '';
+					if ($pv->getPath() === $path . $tv->getId() . '.') {
+						unset($pages [$pk]);
+						$sub[] = $pv;
+					}
+				}
+				if (!empty($sub)) $sub = $this->buildTree($pages, $sub);
+				$tv->setSub($sub);
+			}
+			
+			
+		} else {
+			$lowest = false;
+			foreach ($pages as $pk => $pv) {
+				$path = $pv->getPath();
+				if (false === $lowest || substr_count($path, '.') < $lowest) {
+					$lowest = $path;
+				}
+			}
+			
+			
+			if (false !== $lowest) {
+				foreach ($pages as $k => $page) {
+					if ($lowest === $page->getPath()) {
+						unset($pages[$k]);
+						$tree[] = $page;
+					}
+				}
+
+				$tree = $this->buildTree($pages, $tree);
+			}
+		}
+		
+		return $tree;
+	}
+	
 	
 	
 	public function getOtherTrees($id)
@@ -169,20 +330,20 @@ class PagesModel extends FpsModel
 		$sql = '';
 
 		if (in_array('news', $latest_on_home)) 
-		$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `comments`, `views`, `author_id`, (SELECT \"news\") AS skey  FROM `" 
+		$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `views`, `author_id`, (SELECT \"news\") AS skey  FROM `" 
 			 . $Register['DB']->getFullTableName('news') . "` "
-			 . "WHERE `view_on_home` = '1' AND `available` = '1') ";
+			 . "WHERE `view_on_home` = '1' AND `available` = '1' AND `premoder` = 'confirmed') ";
 		if (in_array('loads', $latest_on_home)) {
 			if (!empty($sql)) $sql .= 'UNION ';
-			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `comments`, `views`, `author_id`, (SELECT \"loads\") AS skey   FROM `" 
+			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `views`, `author_id`, (SELECT \"loads\") AS skey   FROM `" 
 				 . $Register['DB']->getFullTableName('loads') . "` "
-				 . "WHERE `view_on_home` = '1' AND `available` = '1') ";
+				 . "WHERE `view_on_home` = '1' AND `available` = '1' AND `premoder` = 'confirmed') ";
 		}
 		if (in_array('stat', $latest_on_home)) {
 			if (!empty($sql)) $sql .= 'UNION ';
-			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `comments`, `views`, `author_id`, (SELECT \"stat\") AS skey  FROM `" 
+			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `views`, `author_id`, (SELECT \"stat\") AS skey  FROM `" 
 				 . $Register['DB']->getFullTableName('stat') . "` "
-				 . "WHERE `view_on_home` = '1' AND `available` = '1') ";
+				 . "WHERE `view_on_home` = '1' AND `available` = '1' AND `premoder` = 'confirmed') ";
 		}
 
 
