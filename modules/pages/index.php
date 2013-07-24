@@ -2,12 +2,12 @@
 /*-----------------------------------------------\
 | 												 |
 |  @Author:       Andrey Brykin (Drunya)         |
-|  @Version:      1.5.6                          |
+|  @Version:      1.5.7                          |
 |  @Project:      CMS                            |
 |  @package       CMS Fapos                      |
 |  @subpackege    Pages Module                   |
 |  @copyright     ©Andrey Brykin 2010-2013       |
-|  @last mod      2013/04/07                     |
+|  @last mod      2013/07/07                     |
 \-----------------------------------------------*/
 
 /*-----------------------------------------------\
@@ -46,23 +46,24 @@ Class PagesModule extends Module {
 	function index($id = null, $s = null, $x = null) {
 		//if isset ID - we need load page with this ID
 		if (!empty($id)) {
-			if (is_numeric($id)) {
-				$id = intval($id);
-				if ($id < 2)
-					redirect('/error.php?ac=404');
+			if (!preg_match('#^[\da-z_\-./]+$#i', $id))
+				redirect('/error.php?ac=404');
 
-				$page = $this->Model->getById($id);
-				if (!$page)
-					redirect('/error.php?ac=404');
-			} else {
-				if (!preg_match('#^[\da-z_\-.]+$#i', $id))
-					redirect('/error.php?ac=404');
+			$page = $this->Model->getByUrl($id);
+			if (!$page) {
+				if (is_numeric($id)) {
+					$id = intval($id);
+					if ($id < 2)
+						redirect('/error.php?ac=404');
 
-				$page = $this->Model->getByUrl($id);
-				if (!$page)
+					$page = $this->Model->getById($id);
+					if (!$page)
+						redirect('/error.php?ac=404');
+				} else {
 					redirect('/error.php?ac=404');
-				$id = $page->getId();
+				}
 			}
+			$id = $page->getId();
 
 			$this->page_title = $page->getName();
 			$this->page_meta_keywords = $page->getMeta_keywords();
@@ -87,7 +88,7 @@ Class PagesModule extends Module {
 
 				if (!empty($pages) && is_array($pages)) {
 					foreach ($pages as $p) {
-						$navi['navigation'] .= __('Separator') . get_link(__($p->getName()), '/' . $p->getId());
+						$navi['navigation'] .= __('Separator') . get_link(__($p->getName()), '/' . $this->Model->buildUrl($p->getId()));
 					}
 				}
 			}
@@ -127,7 +128,7 @@ Class PagesModule extends Module {
 
 					// Get users(authors)
 					$uids = array();
-					$mod_mats = array('news' => array(), 'stat' => array(), 'question' => array(), 'games' => array(), 'loads' => array());
+					$mod_mats = array('news' => array(), 'stat' => array(), 'loads' => array());
 					foreach ($entities as $key => $mat) {
 						$uids[] = $mat->getAuthor_id();
 						switch ($mat->getSkey()) {
@@ -136,12 +137,6 @@ Class PagesModule extends Module {
 								break;
 							case 'stat':
 								$mod_mats['stat'][$key] = $mat;
-								break;
-							case 'question':
-								$mod_mats['question'][$key] = $mat;
-								break;
-							case 'games':
-								$mod_mats['games'][$key] = $mat;
 								break;
 							case 'loads':
 								$mod_mats['loads'][$key] = $mat;
@@ -161,10 +156,6 @@ Class PagesModule extends Module {
 							$mod_mats['news'] = $this->AddFields->mergeRecords($mod_mats['news'], false, 'news');
 						if (!empty($mod_mats['stat']) && count($mod_mats['stat']) > 0)
 							$mod_mats['stat'] = $this->AddFields->mergeRecords($mod_mats['stat'], false, 'stat');
-						if (!empty($mod_mats['question']) && count($mod_mats['question']) > 0)
-							$mod_mats['question'] = $this->AddFields->mergeRecords($mod_mats['question'], false, 'question');
-						if (!empty($mod_mats['games']) && count($mod_mats['games']) > 0)
-							$mod_mats['games'] = $this->AddFields->mergeRecords($mod_mats['games'], false, 'games');
 						if (!empty($mod_mats['loads']) && count($mod_mats['loads']) > 0)
 							$mod_mats['loads'] = $this->AddFields->mergeRecords($mod_mats['loads'], false, 'loads');
 					}
@@ -202,7 +193,7 @@ Class PagesModule extends Module {
 					}
 
 
-					$entities = $mod_mats['news'] + $mod_mats['stat'] + $mod_mats['question'] + $mod_mats['games'] + $mod_mats['loads'];
+					$entities = $mod_mats['news'] + $mod_mats['stat'] + $mod_mats['loads'];
 					ksort($entities);
 
 

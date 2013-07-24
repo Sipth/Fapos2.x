@@ -73,11 +73,11 @@ class SearchModule extends Module {
 			$modules = array();
 			foreach ($_POST['m'] as $m) {
 				if ($m == 'forum' or $m == 'news'
-						or $m == 'stat' or $m == 'loads')
+						or $m == 'stat' or $m == 'loads' or $m == 'question' or $m == 'games')
 					Array_push($modules, $m);
 			}
 		} else {
-			$modules = array('forum', 'news', 'stat', 'loads');
+			$modules = array('forum', 'news', 'stat', 'loads', 'question', 'games');
 		}
 		$_SESSION['m'] = $modules;
 
@@ -181,6 +181,8 @@ class SearchModule extends Module {
 			'news' => '0',
 			'stat' => '0',
 			'loads' => '0',
+			'question' => '0',
+			'games' => '0',
 		);
 
 
@@ -280,6 +282,8 @@ class SearchModule extends Module {
 						case 'news':
 						case 'stat':
 						case 'loads':
+						case 'question':
+						case 'games':
 							$text = $rec->getTitle() . ' ' . $rec->getMain() . ' ' . $rec->getTags();
 							if (mb_strlen($text) < $this->minInputStr || !is_string($text))
 								continue;
