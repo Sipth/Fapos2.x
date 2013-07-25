@@ -347,15 +347,15 @@ class PagesModel extends FpsModel
 		}
 		if (in_array('question', $latest_on_home)) {
 			if (!empty($sql)) $sql .= 'UNION ';
-			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `comments`, `views`, `author_id`, (SELECT \"question\") AS skey  FROM `" 
+			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `views`, `author_id`, (SELECT \"question\") AS skey  FROM `" 
 				 . $Register['DB']->getFullTableName('question') . "` "
-				 . "WHERE `view_on_home` = '1' AND `available` = '1') ";
+				 . "WHERE `view_on_home` = '1' AND `available` = '1' AND `premoder` = 'confirmed') ";
 		}
 		if (in_array('games', $latest_on_home)) {
 			if (!empty($sql)) $sql .= 'UNION ';
-			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `comments`, `views`, `author_id`, (SELECT \"games\") AS skey  FROM `" 
+			$sql .= "(SELECT `title`, `main`, `date`, `on_home_top`, `id`, `views`, `author_id`, (SELECT \"games\") AS skey  FROM `" 
 				 . $Register['DB']->getFullTableName('games') . "` "
-				 . "WHERE `view_on_home` = '1' AND `available` = '1') ";
+				 . "WHERE `view_on_home` = '1' AND `available` = '1' AND `premoder` = 'confirmed') ";
 		}
 
 
