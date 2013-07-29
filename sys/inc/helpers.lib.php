@@ -217,6 +217,8 @@ function getOrderParam($class_name) {
 		case 'FotoModule':
 		case 'StatModule':
 		case 'NewsModule':
+		case 'GamesModule':
+		case 'QuestionModule':
 			$allowed_keys = array('title', 'views', 'date', 'comments');
 			$default_key = 'date';
 			break;
