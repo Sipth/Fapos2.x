@@ -51,6 +51,12 @@ class LastComments {
 				JOIN `" . $this->DB->getFullTableName('loads') . "` b ON b.`id` = a.`entity_id` WHERE a.`module` = 'loads')
 				UNION (SELECT a.`date`, a.`id`, a.`entity_id`, a.`name`, a.`message`, b.`title`, a.`module`
 				FROM `" . $this->DB->getFullTableName('comments') . "` a 
+				JOIN `" . $this->DB->getFullTableName('question') . "` b ON b.`id` = a.`entity_id` WHERE a.`module` = 'question')
+				UNION (SELECT a.`date`, a.`id`, a.`entity_id`, a.`name`, a.`message`, b.`title`, a.`module`
+				FROM `" . $this->DB->getFullTableName('comments') . "` a 
+				JOIN `" . $this->DB->getFullTableName('games') . "` b ON b.`id` = a.`entity_id` WHERE a.`module` = 'games')
+				UNION (SELECT a.`date`, a.`id`, a.`entity_id`, a.`name`, a.`message`, b.`title`, a.`module`
+				FROM `" . $this->DB->getFullTableName('comments') . "` a 
 				JOIN `" . $this->DB->getFullTableName('foto') . "` b ON b.`id` = a.`entity_id` WHERE a.`module` = 'foto')
 				ORDER BY `date` DESC LIMIT " . $this->limit;
 			$comments = $this->DB->query($sql);
@@ -65,6 +71,8 @@ class LastComments {
 					case 'loads': $str = 'к загрузке'; break;
 					case 'news': $str = 'к новости'; break;
 					case 'stat': $str = 'к статье'; break;
+					case 'question': $str = 'к ответу'; break;
+					case 'games': $str = 'мнению'; break;
 				}
 				$link = get_link($comm['title'], '/' . $comm['module'] . '/view/' . $comm['entity_id']);
 				$output .= sprintf($this->wrap, $comm['name'], $str, $link);
