@@ -150,6 +150,13 @@ Class UsersModule extends Module {
 		}
 
 
+		// Navigation Panel
+		$nav = array();
+		$nav['navigation'] = get_link(__('Home'), '/') . __('Separator')
+				. get_link(h($this->module_title), $this->getModuleURL()) . __('Separator') . __('Registration');
+		$this->_globalize($nav);
+
+
 		// View rules
 		if (empty($key)) {
 			$usModel = $this->Register['ModManager']->getModelInstance('UsersSettings');
