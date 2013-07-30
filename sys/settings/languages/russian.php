@@ -15,8 +15,8 @@ $language = array(
 	'Article'   					=> 'Статьи',
 	'Loads'   						=> 'Каталог файлов',
 	'Photo'   						=> 'Каталог фото',
-	'Question'						=> 'Вопросы'
-	'Games'							=> 'Игры'
+	'Question'						=> 'Вопросы',
+	'Games'							=> 'Игры',
 	
 	// ACL rules
 	'view_list' 					=> 'Смотреть список материалов',						
