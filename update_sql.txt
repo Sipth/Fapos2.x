@@ -4,6 +4,8 @@
 ALTER TABLE `news` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';
 ALTER TABLE `stat` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';
 ALTER TABLE `loads` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';
+ALTER TABLE `games` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';
+ALTER TABLE `question` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';
 ALTER TABLE `pages` ADD `meta_title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `url`;
 ALTER TABLE `pages` ADD `title` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `name`;
 ALTER TABLE `pages` ADD `publish` ENUM( '0', '1' ) NOT NULL DEFAULT '1';
