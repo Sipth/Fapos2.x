@@ -13,7 +13,7 @@ class Fps_Viewer_TokensParser
 	private $positions;
 	private $cursor;
 	private $code;
-	private $linenum;
+	private $lineno;
 	private $end;
 	private $tokens;
 	private $brackets;
