@@ -44,7 +44,7 @@ class UsersVotesEntity extends FpsEntity
             'from_user' => intval($this->from_user),
             'to_user' => intval($this->to_user),
             'comment' => $this->comment,
-            'date' => new Expr($this->date),
+            'date' => $this->date,
             'points' => intval($this->points),
         );
         if ($this->id) $params['id'] = $this->id;

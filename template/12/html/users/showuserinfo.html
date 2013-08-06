@@ -3,7 +3,7 @@
   <td class="title" colspan="2">Профиль пользователя {{ user.name }}</td>
 </tr>
 
-{% if fps_user_id %}
+{% if fps_id %}
 <tr>
 <td colspan="2">
 <table style="text-align:center; border: 1px solid #7c7c7c;">
@@ -42,7 +42,7 @@
 <td><img src="{{ template_path }}/img/profile/group.png"/> Группа:</td>
 <td>
 	{% if checkAccess([module,'edit_users']) %}
-		{% if fps_user_id == user.id %}
+		{% if fps_id == user.id %}
 			{{ user.group }}
 		{% else %}
 			<div class="group_edit">
@@ -69,17 +69,26 @@
 </td>
 </tr>
 
+
+
+
+
+
+
+
 <tr>
 <td>
 <img src="{{ template_path }}/img/profile/reputation.png"/>  Репутация:</td>
-<td>{{ user.rating }}&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="javascript:void(0)" onClick="$('#setRating_{{ user.user_id }}').show();">-&nbsp;/&nbsp;+</a></td>
+<td><a href="javascript:void(0)" onClick="showFpsWin('{{ www_root }}/users/votes_story/{{ user.id }}', '', 'История рейтинга ({{ user.name }})');">{{ user.rating }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:void(0)" onClick="$('#setRating_{{ user.id }}').show();">-&nbsp;/&nbsp;+</a></td>
 </tr>
 
 <tr>
 <td><img src="{{ template_path }}/img/profile/important.png"/> Предупреждения:</td>
-<td>{{ user.warnings }}</td>
+<td><a href="javascript:void(0)" onClick="showFpsWin('{{ www_root }}/users/warnings_story/{{ user.id }}', '', 'История предупреждений ({{ user.name }})');">{{ user.warnings }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="javascript:void(0)" onClick="$('#addWarning_{{ user.id }}').show();">-&nbsp;/&nbsp;+</a></td>
 </tr>
+
 
 <tr>
    <td width="30%"><img src="{{ template_path }}/img/profile/reg.png"/> Дата регистрации:</td>
@@ -175,21 +184,59 @@
 </tr>
 </table>
 
-
-<div id="setRating_{{ user.user_id }}" class="fps-fwin" style="display:none;">
+<div id="setRating_{{ user.id }}" class="fps-fwin" style="display:none;">
 <div class="drag_window">
-    <div class="title" onmousedown="drag_object(event, this.parentNode)">Голос для <b>{{ user.name }}</b></div>
-    <div onClick="$('#setRating_{{ user.user_id }}').hide()" class="close"></div>
-    <div class="cont">
-        <form id="ratingForm_{{ user.user_id }}">
+    <div class="fps-title" onmousedown="drag_object(event, this.parentNode)">Голос для <b>{{ user.name }}</b></div>
+    <div onClick="$('#setRating_{{ user.id }}').hide()" class="fps-close"></div>
+    <div class="fps-cont">
+        <form id="ratingForm_{{ user.id }}">
             <input type="radio" name="points" value="1" /><b>&nbsp;1</b><br />
             <input type="radio" name="points" value="0" /><b>&nbsp;0</b><br />
             <input type="radio" name="points" value="-1" /><b>-1</b><br />
             <textarea name="comment"></textarea><br />
-            <input type="button" value="Отправить" onClick="setRating({{ user.user_id }}, 'ratingForm_{{ user.user_id }}');" />
+            <input type="button" value="Отправить" onClick="setRating({{ user.id }}, 'ratingForm_{{ user.id }}');" />
         </form>
-        <div id="infomess_{{ user.user_id }}"></div>
+        <div id="infomess_{{ user.id }}"></div>
     </div>
 </div>
 </div>
 
+<div id="addWarning_{{ user.id }}" class="fps-fwin" style="display:none;">
+    <div class="drag_window">
+        <div class="fps-title" onmousedown="drag_object(event, this.parentNode)">Замечание для <b>{{ user.name }}</b></div>
+        <div onClick="$('#addWarning_{{ user.id }}').hide()" class="fps-close"></div>
+        <div class="fps-cont">
+            <form id="warningForm_{{ user.id }}">
+                <fieldset>
+                    <legend><b>Действие</b></legend>
+                    <input type="radio" name="points" value="1">[+]Повысить уровень замечаний<br />
+                    <input type="radio" name="points" value="-1">[-]Понизить уровень замечаний(снять бан)<br />
+                </fieldset>
+                <fieldset>
+                    <legend><b>Причина</b></legend>
+                    <textarea style="width:98%;" name="cause"></textarea>
+                </fieldset>
+                <fieldset>
+                    <legend><b>Бан</b></legend>
+                    <input style="width:50px;margin:2px;" type="text" name="cnt" value="" />
+                    <select style="width:80px;margin:2px;" name="mult">
+                        <option value="h">Часа</option>
+                        <option value="d">Дней</option>
+                        <option value="w">Недель</option>
+                        <option value="m">Месяцев</option>
+                        <option value="y">Лет</option>
+                    </select>
+                    <input type="checkbox" name="permanently" value="1" />Навсегда
+                </fieldset>
+                <fieldset>
+                    <legend><b>Уведомление</b></legend>
+                    <input type="checkbox" name="noticepm" value="1" />Личные сообщения
+                </fieldset>
+                <fieldset>
+                    <input type="button" value="Отправить" onClick="addWarning_({{ user.id }}, 'warningForm_{{ user.id }}');" />
+                </fieldset>
+            </form>
+            <div id="winfomess_{{ user.id }}"></div>
+        </div>
+    </div>
+</div>

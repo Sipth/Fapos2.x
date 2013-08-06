@@ -40,18 +40,4 @@ class UsersVotesModel extends FpsModel
             'foreignKey' => 'from_user',
 		),
 	);
-	
-
-	
-	
-	public function deleteUserWarnings($id)
-	{
-		$Register = Register::getInstance();
-		$votes = $this->getCollection(array('user_id' => $id));
-		if (!empty($votes)) {
-			foreach ($votes as $vote) {
-				$vote->delete();
-			}
-		}
-	}
 }

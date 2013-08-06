@@ -24,7 +24,7 @@
 /**
  *
  */
-class UsersEntity extends FpsEntity
+class UsersWarningsEntity extends FpsEntity
 {
 	
 	protected $id;
@@ -43,7 +43,7 @@ class UsersEntity extends FpsEntity
             'user_id' => intval($this->user_id),
             'admin_id' => intval($this->admin_id),
             'cause' => $this->cause,
-            'date' => new Expr($this->date),
+            'date' => $this->date,
             'points' => intval($this->points),
         );
         if ($this->id) $params['id'] = $this->id;
@@ -51,6 +51,10 @@ class UsersEntity extends FpsEntity
         return ($Register['DB']->save('users_warnings', $params));
     }
 	
-
+        public function delete($id)
+        {
+        $Register = Register::getInstance();
+        $Register['DB']->delete('users_warnings', array('id' => $id));
+        }
 
 }

@@ -2568,6 +2568,7 @@ Class UsersModule extends Module {
 					));
 			$voteEntity->save();
 			die('ok');
+			die ('max');
 		}
 		die(__('Some error occurred'));
 	}
@@ -2748,19 +2749,19 @@ Class UsersModule extends Module {
 
 		if (!empty($clean_warnings)) {
 			$intruder->setWarnings(0);
-			$votesModel = $this->Register['ModManager']->getModelInstance('UsersVotes');
-			$votesModel->deleteUserWarnings($uid);
+			$warningsModel = $this->Register['ModManager']->getModelInstance('UsersWarnings');
+			$warningsModel->deleteUserWarnings($uid);
 		} else {
 			$intruder->setWarnings($intruder->getWarnings() + $points);
-			$votesEntityName = $this->Register['ModManager']->getEntityName('UsersVotes');
-			$votesEntity = new $votesEntityName(array(
+			$warningsEntityName = $this->Register['ModManager']->getEntityName('UsersWarnings');
+			$warningsEntity = new $warningsEntityName(array(
 						'user_id' => $uid,
 						'admin_id' => $adm_id,
 						'points' => $points,
 						'date' => new Expr('NOW()'),
 						'cause' => $cause,
 					));
-			$votesEntity->save();
+			$warningsEntity->save();
 		}
 		$intruder->save();
 
@@ -2814,7 +2815,7 @@ Class UsersModule extends Module {
 
 		$warModel = $this->Register['ModManager']->getModelInstance('UsersWarnings');
 		$warModel->bindModel('Users');
-		$warnings = $warModel->getColection(array(
+		$warnings = $warModel->getCollection(array(
 			'user_id' => $uid
 				), array(
 			'order' => 'date DESC'
@@ -2828,11 +2829,16 @@ Class UsersModule extends Module {
 		$max_warnings_by_ban = $this->Register['Config']->read('warnings_by_ban', $this->module);
 		$user_procent_warnings = (100 / $max_warnings_by_ban) * $to_user->getWarnings();
 		foreach ($warnings as $warning) {
-			$warning->setModerPanel(get_link('', 'javascript://', array('onclick' => "deleteUserWarning('" . $warning->getId() . "'); return false;", 'class' => 'fps-delete')));
-		}
+                        // Admin buttons
+                        $warning->setModer_panel('');
+                        if ($this->ACL->turn(array($this->module, 'delete_warnings'), false)) {
+                            $warning->setModer_Panel(get_link('', 'javascript://', array('onclick' => "deleteUserWarning('" . $warning->getId() . "'); return false;", 'class' => 'fps-delete')));
+                        }
+                }
 
-
-		$source = $this->render('rating_tb.html', array(
+                
+                
+		$source = $this->render('warning_tb.html', array(
 			'to_user' => $to_user,
 			'warnings' => $warnings,
 				));
@@ -2859,7 +2865,7 @@ Class UsersModule extends Module {
 
 			if (!empty($warning)) {
 				$user_warnings = $this->Model->getById($warning->getUser_id());
-				$warning->delete();
+				$warning->delete($wID);
 
 				$ban = 1;
 				if (!empty($user_warnings)) {
