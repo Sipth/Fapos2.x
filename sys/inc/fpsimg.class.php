@@ -106,7 +106,9 @@ class FpsImg {
 		// create image
 		$return_img = imagecreatetruecolor($main_w, $main_h);
 		switch ($orig_type) {
+                        case 1:
 			case 'image/gif':
+			case 3:
 			case 'image/png':
 				imagecolortransparent($return_img, imagecolortransparent($main_img));
 				imagealphablending($return_img, false);

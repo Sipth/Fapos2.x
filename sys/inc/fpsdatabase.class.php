@@ -263,6 +263,7 @@ class FpsDataBase {
 	
 	public function delete($table, $params)
 	{
+                $table = $this->getFullTableName($table);
 		$cond = array();
 		foreach ($params as $field => $value) {
 			if (is_int($field)) {

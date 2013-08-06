@@ -48,7 +48,9 @@ function resampleImage($path, $new_path, $sizew, $sizeh = false) {
 
 	$dest = imagecreatetruecolor($nw, $nh);
 	switch ($itype) {
+                case 1:
 		case 'image/gif':
+		case 3:
 		case 'image/png':
 			imagecolortransparent($dest, imagecolortransparent($img));
 			imagealphablending($dest, false);
