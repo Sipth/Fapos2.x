@@ -183,7 +183,7 @@ function editAnk(&$page_title) {
 				<div class="items">
 					<div class="setting-item">
 						<div class="left">
-							Имя
+							Логин
 						</div>
 						<div class="right">
 							<input type="hidden" value="' . $_SESSION['adm_form_key'] . '" name="adm_form_key" />
@@ -191,6 +191,15 @@ function editAnk(&$page_title) {
 						</div>
 						<div class="clear"></div>
 					</div>
+                                        <div class="setting-item">
+                                                <div class="left">
+                                                        Полное имя
+                                                </div>
+                                                <div class="right">
+                                                        <input type="text" name="full_name" value="' . h($full_name) .'" />
+                                                </div>
+                                                <div class="clear"></div>
+                                        </div>
 					<div class="setting-item">
 						<div class="left">
 							Ранг
@@ -415,7 +424,9 @@ function saveAnk() {
 
 	//check data for wrong chars
 	if ($v_obj->cha_val($login, V_TITLE) !== true) 
-		$errors .= '<li>Имя содержит недопустимые символы</li>';
+		$errors .= '<li>Логин содержит недопустимые символы</li>';
+        if ($v_obj->cha_val($full_name, V_FULLNAME) !== true) 
+                $errors .= '<li>Полное имя содержит недопустимые символы</li>';
 	//if (!empty($state) && $v_obj->cha_val($state, V_TEXT) !== true) 
 	//	$errors .= '<li>Ранг содержит недопустимые символы</li>';
 	if (!empty($email) && $v_obj->cha_val($email, V_MAIL) !== true) 
@@ -431,7 +442,9 @@ function saveAnk() {
 
 	//check data for max/min lenght
 	if ($v_obj->len_val($login, 3, 20) !== true) 
-		$errors .= '<li>Имя слишком короткое/длинное. Должно быть в диапазоне 3-15 символов</li>';
+		$errors .= '<li>Логин слишком короткий/длинный. Должен быть в диапазоне 3-15 символов</li>';
+        if ($v_obj->len_val($full_name, 0, 255) !== true) 
+                $errors .= '<li>Полное имя не должно превышать 250 символов</li>';
 	if ($v_obj->len_val($url, 0) !== true) 
 		$errors .= '<li>Слишком длинный URL</li>';
 	if ($v_obj->len_val($icq, 0, 10) !== true) 
@@ -450,7 +463,7 @@ function saveAnk() {
 	
 	if (!empty($check_user[0]['name']) && $check_user[0]['name'] !== $login) {
 		if ($v_obj->uniq_val($login, array('table' => 'users', 'field' => 'name'), 'hight') != true) 
-			$errors .= '<li>Это имя уже занято :(</li>';
+			$errors .= '<li>Этот ник уже занят :(</li>';
 	}
 	
 	if (!empty($errors)) {
@@ -465,6 +478,7 @@ function saveAnk() {
 	$data = array(
 		'id' 		=> $_GET['id'],
 		'name' 		=> $login,
+                'full_name'          => $full_name,
 		'state' 	=> $state,
 		'email'	    => $email,
 		'url' 		=> $url,

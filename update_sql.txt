@@ -1,5 +1,12 @@
 Здесь буду писать все запросы к БД, которые нужно выполнить при обновлении до новой версии движка. При новой установке они выполнятся автоматически.
 
+
+
+>>> 30 июля 2013
+ALTER TABLE `users` ADD `full_name` VARCHAR( 100 ) CHARACTER SET utf8 NOT NULL AFTER `name` ;
+
+
+
 >>> 22 июня 2013
 ALTER TABLE `news` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';
 ALTER TABLE `stat` ADD `premoder` ENUM( 'nochecked', 'rejected', 'confirmed' ) NOT NULL DEFAULT 'confirmed';

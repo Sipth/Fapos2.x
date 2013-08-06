@@ -32,6 +32,15 @@
 	</td>
 </tr>
 
+
+{% if user.full_name %}
+    <tr>
+        <td><img src="{{ template_path }}/img/profile/vozrast.png"/> Полное имя:</td>
+        <td>{{ user.full_name }}</td>
+    </tr>
+{% endif %}
+
+
 <tr>
 <td>
 <img src="{{ template_path }}/img/profile/status.png"/> Статус:</td>
