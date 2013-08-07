@@ -371,6 +371,7 @@ $language = array(
         'Status'                        => 'Статус',
         'This module disabled'          => 'Этот модуль отключен',
         'Pages'                         => '&nbsp;Страницы: ',
+        'Preview settings'              => 'Настройки миниатюр',
         'Watermark settings'            => 'Настройки водяных знаков',
         'Additional fields'             => 'Дополнительные поля',
         'Add'                                           => 'Добавить',

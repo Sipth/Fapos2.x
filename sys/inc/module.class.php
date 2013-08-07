@@ -751,8 +751,8 @@ class Module {
 		if (!isset($module)) $module = $this->module;
 		$image_link = get_url($this->getFilesPath($filename, $module));
 		$preview_link = (Config::read('use_preview', $this->module) ? get_url('/image/' . $module . '/' . $filename) : $image_link);
-		$size_x = Config::read('img_size_x', $this->module);
-		$size_y = Config::read('img_size_y', $this->module);
+		$size_x = Config::read('img_size_x');
+		$size_y = Config::read('img_size_y');
 		$str = 
 			(Config::read('use_preview', $this->module) ? '<a class="gallery" href="' . $image_link . '">' : '') .
 			'<img %s style="max-width:' . (!empty($size_x) ? $size_x : 150) . 'px; max-height:' . (!empty($size_y) ? $size_y : 150) . 'px;" src="' . $preview_link . '" />' .

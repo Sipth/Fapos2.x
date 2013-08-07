@@ -154,6 +154,9 @@ if (in_array($module, $sysMods)) {
 		case 'secure':
 			$pageTitle = __('Security settings');
 			break;
+                case 'preview':
+                        $pageTitle = __('Preview settings');
+                        break;
 		case 'watermark':
 			$pageTitle = __('Watermark settings');
 			break;
