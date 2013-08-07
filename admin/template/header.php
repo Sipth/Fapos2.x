@@ -167,12 +167,12 @@
 				<tr>
 					<td width="237">
 						<div class="side-menu">
-							<div class="search">
+							<!--<div class="search">
 								<form>
 									<div class="input"><input type="text" name="search" placeholder="Search..." /></div>
 									<input class="submit-butt" type="submit" name="send" value="" />
 								</form>
-							</div>
+							</div>-->
 							<ul>
 							
 							

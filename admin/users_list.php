@@ -451,7 +451,7 @@ function saveAnk() {
 		$errors .= '<li>ICQ не должно превышать 10 символов </li>';
 	if ($v_obj->len_val($about, 0, 300) !== true) 
 		$errors .= '<li>Поле "о себе" не должно превышать 300 символов</li>';
-	if ($v_obj->len_val($signature, 250) !== true) 
+	if ($v_obj->len_val($signature, 0, 250) !== true) 
 		$errors .= '<li>Подпись не должна превышать 250 символов</li>';
 	if (!empty($passw) && $v_obj->len_val($passw, 6, 32) !== true) 
 		$errors .= '<li>Пароль слишком длинный/короткий. Он должен содержать 6-32 символа</li>';
