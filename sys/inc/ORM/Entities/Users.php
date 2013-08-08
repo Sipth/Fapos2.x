@@ -29,6 +29,7 @@ class UsersEntity extends FpsEntity
 	
 	protected $id;
 	protected $name;
+	protected $full_name;
 	protected $passw;
 	protected $email;
 	protected $color;
@@ -64,6 +65,7 @@ class UsersEntity extends FpsEntity
     {
         $params = array(
             'name' => $this->name,
+            'full_name' => $this->full_name,
             'passw' => $this->passw,
             'email' => $this->email,
             'color' => $this->color,

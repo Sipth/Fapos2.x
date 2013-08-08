@@ -154,6 +154,9 @@ if (in_array($module, $sysMods)) {
 		case 'secure':
 			$pageTitle = __('Security settings');
 			break;
+                case 'preview':
+                        $pageTitle = __('Preview settings');
+                        break;
 		case 'watermark':
 			$pageTitle = __('Watermark settings');
 			break;
@@ -267,7 +270,7 @@ $output = '';
 if (count($settingsInfo)) {
 	foreach ($settingsInfo as $fname => $params) {
 		if (is_string($params)) {
-			//$output .= '<tr class="small"><td class="group" colspan="3">' . h($params) . '</td></tr>';
+			$output .= '<div class="setting-item"><div class="title">' . h($params) . '</div></div>';
 			continue;
 		}
 		
