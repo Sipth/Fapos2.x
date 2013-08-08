@@ -141,6 +141,7 @@
 		  '<a href="settings.php?m=hlu"><?php echo __('SEO settings'); ?></a>',
 		  '<a href="settings.php?m=rss"><?php echo __('RSS settings'); ?></a>',
 		  '<a href="settings.php?m=sitemap"><?php echo __('Sitemap settings'); ?></a>',
+		  '<a href="settings.php?m=preview"><?php echo __('Preview settings'); ?></a>',
 		  '<a href="settings.php?m=watermark"><?php echo __('Watermark settings'); ?></a>',
 		  '<a href="settings.php?m=autotags"><?php echo __('Auto tags settings'); ?></a>',
 		  '<a href="settings.php?m=links"><?php echo __('Links settings'); ?></a>'
@@ -166,12 +167,12 @@
 				<tr>
 					<td width="237">
 						<div class="side-menu">
-							<div class="search">
+							<!--<div class="search">
 								<form>
 									<div class="input"><input type="text" name="search" placeholder="Search..." /></div>
 									<input class="submit-butt" type="submit" name="send" value="" />
 								</form>
-							</div>
+							</div>-->
 							<ul>
 							
 							

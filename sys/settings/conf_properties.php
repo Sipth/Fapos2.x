@@ -377,6 +377,29 @@ $settingsInfo = array(
 			'checked' => '1',
 		),
 	),
+
+        /* Preview */
+        'preview' => array(
+            'use_preview' => array(
+                    'type' => 'checkbox',
+                    'title' => 'Использовать миниатюры изображений',
+                    'description' => 'Возможность автоматического создания миниатюр для больших изображений.',
+                    'value' => '1',
+                    'checked' => '1',
+            ),
+            'img_size_x' => array(
+                    'type' => 'text',
+                    'title' => 'Ширина миниатюры',
+                    'description' => 'Максимально допустимый размер миниатюры по горизонтали.',
+                    'help' => 'px',
+            ),
+            'img_size_y' => array(
+                    'type' => 'text',
+                    'title' => 'Высота миниатюры',
+                    'description' => 'Максимально допустимый размер миниатюры по вертикали.',
+                    'help' => 'px',
+            ),
+        ),
 	
 	/* Watermark */
 	'watermark' => array(
@@ -623,6 +646,7 @@ $sysMods = array(
 	'secure',
 	'common',
 	'sitemap',
+	'preview',
 	'watermark',
 	'autotags',
 	'links',
@@ -631,6 +655,7 @@ $noSub = array(
 	'sys',
 	'hlu',
 	'sitemap',
+	'preview',
 	'watermark',
 	'autotags',
 	'links',

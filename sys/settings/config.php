@@ -23,7 +23,6 @@ $set = array (
   'autotags_active' => 1,
   'autotags_exception' => 'для,его,при,При,свои,как,все,так,что,это',
   'autotags_priority' => 'fapos cms,fapos,free cms',
-  'img_preview_size' => 200,
   'date_format' => 'Y-m-d/D H:i:s',
   'use_watermarks' => 1,
   'watermark_img' => 'watermark.png',
@@ -69,9 +68,6 @@ $set = array (
     'comment_lenght' => '500',
     'max_attaches' => '10',
     'max_attaches_size' => 5000000,
-    'img_size_x' => '150',
-    'img_size_y' => '350',
-    'use_preview' => 1,
     'fields' => 
     array (
     ),
@@ -90,9 +86,6 @@ $set = array (
     'comment_lenght' => '500',
     'max_attaches' => 10,
     'max_attaches_size' => 5000000,
-    'img_size_x' => 150,
-    'img_size_y' => 200,
-    'use_preview' => 1,
     'fields' => 
     array (
     ),
@@ -119,9 +112,6 @@ $set = array (
     'comment_lenght' => '500',
     'max_attaches' => 10,
     'max_attaches_size' => 5000000,
-    'img_size_x' => 150,
-    'img_size_y' => 200,
-    'use_preview' => 1,
     'fields' => 
     array (
     ),
@@ -221,5 +211,8 @@ $set = array (
   'blacklist_sites' => '*.ucoz.ru,*.ucoz.net',
   'whitelist_sites' => 'fapos.net,www.fapos.net',
   'url_delay' => '5',
+  'use_preview' => 1,
+  'img_size_x' => '200',
+  'img_size_y' => '350',
 )
 ?>

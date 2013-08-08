@@ -409,23 +409,23 @@ class PrintText {
 	public function parseIBb($str) {
 		return preg_replace("#\[i\](.+)\[\/i\]#isU", '<i>\\1</i>', $str);
 	}
-	public function parseImgBb($str, $title = false) {
-		$title = (false !== $title) ? h(preg_replace('#[^\w\dА-я ]+#ui', ' ', $title)) : '';
-		$Register = Register::getInstance();
+        public function parseImgBb($str, $title = false) {
+                $title = (false !== $title) ? h(preg_replace('#[^\w\dА-я ]+#ui', ' ', $title)) : '';
+                $Register = Register::getInstance();
 
-		$sizex = (!empty($Register['module'])) ? intval($Register['Config']->read('img_size_x', $Register['module'])) : 150;
-		$sizey = (!empty($Register['module'])) ? intval($Register['Config']->read('img_size_y', $Register['module'])) : 150;
-		$preview = (!empty($Register['module'])) ? $Register['Config']->read('use_preview', $Register['module']) : false;
-		$str = preg_replace("#\[img\][\s]*([^\"'\>\<\(\)]+)[\s]*\[\/img\]#isU", 
-				($preview ? '<a href="\\1" class="gallery">' : '') .
-				'<img style="max-width:' . (!empty($sizex) ? $sizex : 150) . 'px; max-height:' . (!empty($sizey) ? $sizey : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" />' .
-				($preview ? '</a>' : ''), $str);
-		$str = preg_replace("#\[imgl\][\s]*([^\"'\>\<\(\)]+)[\s]*\[\/imgl\]#isU", 
-				($preview ? '<a style="float:left;" href="\\1" class="gallery">' : '') .
-				'<img style="max-width:' . (!empty($sizex) ? $sizex : 150) . 'px; max-height:' . (!empty($sizey) ? $sizey : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" /><div class="clear"></div>' .
-				($preview ? '</a>' : ''), $str);
-		return $str;
-	}
+                $size_x = $Register['Config']->read('img_size_x');
+                $size_y = $Register['Config']->read('img_size_y');
+                $preview = (!empty($Register['module'])) ? $Register['Config']->read('use_preview', $Register['module']) : false;
+                $str = preg_replace("#\[img\][\s]*([^\"'\>\<\(\)]+)[\s]*\[\/img\]#isU", 
+                                ($preview ? '<a href="\\1" class="gallery">' : '') .
+                                '<img style="max-width:' . (!empty($size_x) ? $size_x : 150) . 'px; max-height:' . (!empty($size_y) ? $size_y : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" />' .
+                                ($preview ? '</a>' : ''), $str);
+                $str = preg_replace("#\[imgl\][\s]*([^\"'\>\<\(\)]+)[\s]*\[\/imgl\]#isU", 
+                                ($preview ? '<a style="float:left;" href="\\1" class="gallery">' : '') .
+                                '<img style="max-width:' . (!empty($size_x) ? $size_x : 150) . 'px; max-height:' . (!empty($size_y) ? $size_y : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" /><div class="clear"></div>' .
+                                ($preview ? '</a>' : ''), $str);
+                return $str;
+        }
 	public function parseUrlBb($str) {
 		if (false !== (stripos($str, '[url')) && false !== (stripos($str, '[/url]'))) {
 			$noindex = Config::read('use_noindex');
