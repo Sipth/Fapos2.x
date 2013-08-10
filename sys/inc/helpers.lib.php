@@ -824,16 +824,21 @@ function getOrderLink($params) {
 
 // перебрасывает на выбранный тип просмотра ЛС, если открыт другой
 function pm_type_redirect($type) {
-	if ($type != Config::read('pm_type', 'users')) {
-		switch (Config::read('pm_type', 'users')) {
-			case '1':
-				$url = '/users/pm/';
-				break;
-			default:
-				$url = '/users/in_msg_box/';
-		}
-		header('Location: ' . get_url($url), TRUE, 301);
-	}
+    $conf_type = Config::read('pm_type', 'users');
+    if ($conf_type == '') $conf_type = '0';
+    if ($type != $conf_type) {
+        switch (Config::read('pm_type', 'users')) {
+            case '0':
+                $url = '/users/in_msg_box/';
+                break;
+            case '1':
+                $url = '/users/pm/';
+                break;
+            default:
+                $url = '/';
+        }
+        header('Location: ' . get_url($url), TRUE, 301);
+    }
 }
 
 // обход массива и применение trim() для элементов
