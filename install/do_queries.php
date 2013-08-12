@@ -92,18 +92,18 @@ $array[] = "DROP TABLE IF EXISTS `{$set['db']['prefix']}pages`";
 $array[] = "CREATE TABLE `{$set['db']['prefix']}pages` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) collate utf8_general_ci NOT NULL,
+  `title` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `template` varchar(255) default '' collate utf8_general_ci NOT NULL,
   `content` longtext collate utf8_general_ci NOT NULL,
   `url` varchar(255) default ''  NOT NULL,
+  `meta_title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `meta_keywords` varchar(255) default ''  NOT NULL,
   `meta_description` text,
   `parent_id` int(11) default 0  NOT NULL,
   `path` varchar(255) default '1.'  NOT NULL,
   `visible` enum('1','0') default '1'  NOT NULL,
-  `meta_title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `url`,
-  `title` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `name`,
+  `position` INT( 11 ) NOT NULL,
   `publish` ENUM( '0', '1' ) NOT NULL DEFAULT '1',
-  `position` INT( 11 ) NOT NULL AFTER `visible`,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
 $array[] = "INSERT INTO `{$set['db']['prefix']}pages` (`id`,`name`,`path`,`content`) VALUES ('1', 'root', '.', '')";
