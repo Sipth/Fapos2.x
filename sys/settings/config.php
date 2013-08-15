@@ -194,7 +194,7 @@ $set = array (
     'index_interval' => 2,
   ),
   'email_activate' => 1,
-  'common' => 
+  'rss' => 
   array (
     'rss_news' => 1,
     'rss_stat' => 1,

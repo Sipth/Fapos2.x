@@ -142,7 +142,7 @@ $module = trim($_GET['m']);
 if (in_array($module, $sysMods)) {
 	$settingsInfo = $settingsInfo[$module];
 	switch($module) {
-		case 'common':
+		case 'rss':
 			$pageTitle = __('RSS settings');
 			break;
 		case 'hlu':
