@@ -114,6 +114,33 @@ if (!empty($smiles)) {
 
 
 
+// получение списка модулей, работающих с RSS
+$rss_modules = array();
+$modules = glob(ROOT.'/modules/*', GLOB_ONLYDIR);
+if (!empty($modules) && is_array($modules)) {
+    foreach ($modules as $fmodule) {
+        if (file_exists($fmodule.'/index.php')) {
+            include_once ($fmodule.'/index.php');
+            $module = basename($fmodule);
+            if (isset($config[$module]) and
+                is_array($config[$module]) and
+                isset($config[$module]['active']) and
+                method_exists(ucfirst($module.'Module'), 'rss')) {
+
+                $rss_modules['rss_'.$module] = array(
+                        'type' => 'checkbox',
+                        'title' => __($module),
+                        'description' => '',
+                        'checked' => '1',
+                        'value' => '1',
+                );
+            }
+        }
+    }
+}
+
+
+
 /**
  * For show template preview
  * 

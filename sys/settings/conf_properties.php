@@ -640,6 +640,9 @@ $settingsInfo = array(
        	),
 	),
 );
+
+$settingsInfo['rss'] = array_merge($settingsInfo['rss'], $rss_modules);
+
 $sysMods = array(
 	'sys',
 	'hlu',
