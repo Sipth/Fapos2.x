@@ -133,10 +133,10 @@ function index(&$page_title) {
 			<td><div class=\"plugin_path\">{$descr}</div></td>
 			<td><span style=\"color:#\">{$hook}</span></td>
 			<td>{$dir}</td>
-			<td colspan=\"2\">
-				<a class=\"edit\" href='plugins.php?ac=edit&dir={$dir}'></a>&nbsp;";
+			<td colspan=\"2\">";
 			if (!empty($params['active'])) {
-				$content .= "<a class=\"off\" href='plugins.php?ac=off&dir={$dir}'></a>
+				$content .= "<a class=\"edit\" href='plugins.php?ac=edit&dir={$dir}'></a>&nbsp;
+                             <a class=\"off\" href='plugins.php?ac=off&dir={$dir}'></a>
 				</td>";
 			} else {
 				$content .= "<a class=\"on\" href='plugins.php?ac=on&dir={$dir}'>";
