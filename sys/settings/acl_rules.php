@@ -24,7 +24,7 @@ $acl_rules = array (
       2 => 3,
       3 => 4,
     ),
-    'need_check_materials' => 
+    'materials_require_premoder' => 
     array (
       0 => 0,
       1 => 1,
@@ -122,7 +122,7 @@ $acl_rules = array (
       3 => 4,
       4 => 3,
     ),
-    'need_check_materials' => 
+    'materials_require_premoder' => 
     array (
       0 => 0,
       1 => 1,
@@ -230,7 +230,7 @@ $acl_rules = array (
       3 => 4,
       4 => 3,
     ),
-    'need_check_materials' => 
+    'materials_require_premoder' => 
     array (
       0 => 0,
       1 => 1,

@@ -201,6 +201,7 @@ $language = array(
         'Wrong file format'                             => 'Недопустимый формат файла',
         'Can not find category'                 => 'Целевая категория не найдена',
         'Material successfully added'           => 'Новый материал успешно добавлен',
+        'Material will be available after validation'           => 'Материал будет доступен после проверки',
         'File is damaged'                               => '<span style="color:red">Файл поврежден или отсутствует :(</span>',
         'Empty field'                                   => 'не заполненно поле',
         'Material editing'                              => 'Редактирование материала',

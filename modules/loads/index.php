@@ -733,10 +733,6 @@ Class LoadsModule extends Module {
 		$in_cat = intval($_POST['cats_selector']);
 		$commented = (!empty($_POST['commented'])) ? 1 : 0;
 		$available = (!empty($_POST['available'])) ? 1 : 0;
-		if (!$this->ACL->turn(array($this->module, 'record_comments_management'), false))
-			$commented = 1;
-		if (!$this->ACL->turn(array($this->module, 'hide_material'), false))
-			$available = ($this->ACL->turn(array($this->module, 'need_check_materials'), false) ? 0 : 1);
 
 		// Проверяем, заполнены ли обязательные поля
 		$valobj = $this->Register['Validate'];  //validation data class
@@ -815,6 +811,8 @@ Class LoadsModule extends Module {
 			$this->showInfoMessage($_SESSION['FpsForm']['error'], $this->getModuleURL('add_form/'));
 		}
 
+        if (!$this->ACL->turn(array($this->module, 'record_comments_management'), false)) $commented = '1';
+        if (!$this->ACL->turn(array($this->module, 'hide_material'), false)) $available = '1';
 
 		//Проверяем прикрепленный файл...
 		$file = '';
@@ -865,7 +863,7 @@ Class LoadsModule extends Module {
 			'premoder'      => 'confirmed',
 		);
 		if ($this->ACL->turn(array($this->module, 'materials_require_premoder'), false))
-			$res['premoder'] = 'nochecked';
+			$data['premoder'] = 'nochecked';
 		if (!empty($file)) {
 			$data['download'] = $file;
 			$data['filename'] = $filename;
@@ -895,7 +893,12 @@ Class LoadsModule extends Module {
 			$this->DB->cleanSqlCache();
 			if ($this->Log)
 				$this->Log->write('adding ' . $this->module, $this->module . ' id(' . $last_id . ')');
-			return $this->showInfoMessage(__('Material successfully added'), $this->getModuleURL('view/' . $last_id));
+
+            if ($this->ACL->turn(array($this->module, 'materials_require_premoder'), false)) {
+                return $this->showInfoMessage(__('Material will be available after validation'));
+            } else {
+                return $this->showInfoMessage(__('Material successfully added'), $this->getModuleURL('view/' . $last_id));
+            }
 		} else {
 			return $this->showInfoMessage(__('Some error occurred'), $this->getModuleURL());
 		}
