@@ -413,16 +413,23 @@ class PrintText {
                 $title = (false !== $title) ? h(preg_replace('#[^\w\dА-я ]+#ui', ' ', $title)) : '';
                 $Register = Register::getInstance();
 
-                $size_x = $Register['Config']->read('img_size_x');
-                $size_y = $Register['Config']->read('img_size_y');
-                $preview = (!empty($Register['module'])) ? $Register['Config']->read('use_preview', $Register['module']) : false;
+                if (!empty($Register['module']) and $Register['Config']->read('use_local_preview', $Register['module'])) {
+                    $size_x = $Register['Config']->read('img_size_x', $Register['module']);
+                    $size_y = $Register['Config']->read('img_size_y', $Register['module']);
+                    $preview = $Register['Config']->read('use_preview', $Register['module']);
+                } else {
+                    $size_x = $Register['Config']->read('img_size_x');
+                    $size_y = $Register['Config']->read('img_size_y');
+                    $preview = false;
+                }
+
                 $str = preg_replace("#\[img\][\s]*([^\"'\>\<\(\)]+)[\s]*\[\/img\]#isU", 
                                 ($preview ? '<a href="\\1" class="gallery">' : '') .
-                                '<img style="max-width:' . (!empty($size_x) ? $size_x : 150) . 'px; max-height:' . (!empty($size_y) ? $size_y : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" />' .
+                                '<img style="max-width:' . ($size_x > 150 ? $size_x : 150) . 'px; max-height:' . ($size_y > 150 ? $size_y : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" />' .
                                 ($preview ? '</a>' : ''), $str);
                 $str = preg_replace("#\[imgl\][\s]*([^\"'\>\<\(\)]+)[\s]*\[\/imgl\]#isU", 
                                 ($preview ? '<a style="float:left;" href="\\1" class="gallery">' : '') .
-                                '<img style="max-width:' . (!empty($size_x) ? $size_x : 150) . 'px; max-height:' . (!empty($size_y) ? $size_y : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" /><div class="clear"></div>' .
+                                '<img style="max-width:' . ($size_x > 150 ? $size_x : 150) . 'px; max-height:' . ($size_y > 150 ? $size_y : 150) . 'px;" src="\\1" alt="' . $title . '" title="' . $title . '" /><div class="clear"></div>' .
                                 ($preview ? '</a>' : ''), $str);
                 return $str;
         }
