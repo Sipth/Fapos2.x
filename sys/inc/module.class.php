@@ -778,4 +778,14 @@ class Module {
 		);
 		return str_replace($from, $to, $message);
 	}
+
+
+    // Функция обрабатывает метку изображения в шаблоне
+    function markerImageAttach($filename, $number, $module = null)
+    {
+        if (!isset($module)) $module = $this->module;
+        $image_link = get_url($this->getFilesPath($filename, $module));
+        $str = '<img src="' . $image_link . '" />';
+        return $str;
+    }
 }

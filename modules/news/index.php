@@ -145,6 +145,7 @@ Class NewsModule extends Module {
 				foreach ($attaches as $attach) {
 					if ($attach->getIs_image() == '1') {
 						$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+						$markers['image_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
 					}
 				}
 			}
@@ -294,6 +295,7 @@ Class NewsModule extends Module {
 				foreach ($attaches as $attach) {
 					if ($attach->getIs_image() == '1') {
 						$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+						$markers['image_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
 					}
 				}
 			}
@@ -416,6 +418,7 @@ Class NewsModule extends Module {
 			foreach ($attaches as $attach) {
 				if ($attach->getIs_image() == '1') {
 					$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+					$markers['image_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
 				}
 			}
 		}
@@ -553,6 +556,7 @@ Class NewsModule extends Module {
 				foreach ($attaches as $attach) {
 					if ($attach->getIs_image() == '1') {
 						$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+						$markers['image_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
 					}
 				}
 			}
