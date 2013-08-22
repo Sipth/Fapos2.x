@@ -58,7 +58,7 @@
 				@ini_set('default_socket_timeout', 5);
 				$new_ver = @file_get_contents('http://fapos.modostroi.ru/last.php?host=' . $_SERVER['HTTP_HOST']);
 				$new_ver = (!empty($new_ver) && $new_ver != FPS_VERSION) 
-				? '<a href="https://github.com/modos189/Fapos2.x/" title="Last version">' . h($new_ver) . '</a>' 
+				? '<a href="https://bitbucket.org/modos189/faposcms" title="Last version">' . h($new_ver) . '</a>' 
 				: '';
 				?>
 				<div class="ava"><img src="<?php echo $ava_path; ?>" alt="user ava" title="user ava" /></div>

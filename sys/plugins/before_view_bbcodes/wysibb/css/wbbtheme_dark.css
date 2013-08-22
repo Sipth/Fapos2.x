@@ -20,7 +20,7 @@ html{height:100% !important;}
   overflow-x: hidden
 }
 .wysibb-body ul,ol{padding:0 0 0 30px}
-.wysibb{margin:0 0 15px 0 !important;border:1px solid #666;position:relative;background:#333;font-family:Arial,Verdana,Tahoma;font-size:12px;}
+.wysibb{margin:0 !important;border:1px solid #666;position:relative;background:#333;font-family:Arial,Verdana,Tahoma;font-size:12px;}
 .wysibb-texarea{
   border:none !important;
   margin:0 !important;
@@ -653,6 +653,7 @@ html{height:100% !important;}
   bottom:-18px;
   right:5px;
   font-size:10px;
+  display: none;
 }
 /* END IMAGE UPLOAD */
 /* MODAL WINDOW */

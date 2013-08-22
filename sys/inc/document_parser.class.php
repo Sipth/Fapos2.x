@@ -275,7 +275,7 @@ class Document_Parser {
             if (is_dir($module)
                 and preg_match('#/(\w+)$#i', $module, $module_name)
                 and Config::read('active', $module_name[1])
-                and Config::read('rss_'.$module_name[1], 'common')):
+                and Config::read('rss_'.$module_name[1], 'rss')):
 
                 $rss .= get_img('/template/' . getTemplateName() . '/img/rss_icon_mini.png') .
                     get_link(__(ucfirst($module_name[1]) . ' RSS'), '/'.$module_name[1].'/rss/') .
