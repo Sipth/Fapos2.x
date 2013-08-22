@@ -227,9 +227,11 @@ Class PagesModule extends Module {
 
 						if (count($matattaches) > 0) {
 							foreach ($matattaches as $attach) {
-								if ($attach->getIs_image() == '1') {
-									$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number(), $result->getSkey());
-								}
+                                if ($attach->getIs_image() == '1') {
+                                    $announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number(), $result->getSkey());
+                                    $markers['img_url_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
+                                    $markers['img_small_url_'.$attach->getAttach_number()] = $this->markerSmallImageAttach($attach->getFilename(), $attach->getAttach_number());
+                                }
 							}
 						}
 

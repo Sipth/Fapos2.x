@@ -787,4 +787,14 @@ class Module {
         $image_link = get_url($this->getFilesPath($filename, $module));
         return $image_link;
     }
+
+
+    // Функция обрабатывает метку превью на изображение в шаблоне
+    function markerSmallImageAttach($filename, $number, $module = null)
+    {
+        if (!isset($module)) $module = $this->module;
+        $preview_link = get_url('/image/' . $module . '/' . $filename);
+
+        return $preview_link;
+    }
 }
