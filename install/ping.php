@@ -16,7 +16,7 @@ function checkUpdate() {
 	@$m = file_get_contents('http://fapos.modostroi.ru/last.php?host=' . $_SERVER['HTTP_HOST']);
 	if ($b || $m) {
 		if ($m && preg_match('#[^></]+#i', $m)) {
-			echo '<a href="https://github.com/modos189/Fapos2.x/">Последняя модифицированная версия ' . trim($m) . '</a>';
+			echo '<a href="https://bitbucket.org/modos189/faposcms">Последняя модифицированная версия ' . trim($m) . '</a>';
 		}
 		if ($b && preg_match('#[^></]+#i', $b)) {
 			if ($w) echo '<br />';

@@ -144,6 +144,8 @@ Class StatModule extends Module {
 				foreach ($attaches as $attach) {
 					if ($attach->getIs_image() == '1') {
 						$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+						$markers['img_url_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
+                        $markers['img_small_url_'.$attach->getAttach_number()] = $this->markerSmallImageAttach($attach->getFilename(), $attach->getAttach_number());
 					}
 				}
 			}
@@ -293,6 +295,8 @@ Class StatModule extends Module {
 				foreach ($attaches as $attach) {
 					if ($attach->getIs_image() == '1') {
 						$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+						$markers['img_url_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
+                        $markers['img_small_url_'.$attach->getAttach_number()] = $this->markerSmallImageAttach($attach->getFilename(), $attach->getAttach_number());
 					}
 				}
 			}
@@ -415,6 +419,8 @@ Class StatModule extends Module {
 			foreach ($attaches as $attach) {
 				if ($attach->getIs_image() == '1') {
 					$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+					$markers['img_url_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
+                    $markers['img_small_url_'.$attach->getAttach_number()] = $this->markerSmallImageAttach($attach->getFilename(), $attach->getAttach_number());
 				}
 			}
 		}
@@ -552,6 +558,8 @@ Class StatModule extends Module {
 				foreach ($attaches as $attach) {
 					if ($attach->getIs_image() == '1') {
 						$announce = $this->insertImageAttach($announce, $attach->getFilename(), $attach->getAttach_number());
+						$markers['img_url_'.$attach->getAttach_number()] = $this->markerImageAttach($attach->getFilename(), $attach->getAttach_number());
+                        $markers['img_small_url_'.$attach->getAttach_number()] = $this->markerSmallImageAttach($attach->getFilename(), $attach->getAttach_number());
 					}
 				}
 			}
@@ -699,10 +707,6 @@ Class StatModule extends Module {
 		$in_cat = intval($_POST['cats_selector']);
 		$commented = (!empty($_POST['commented'])) ? 1 : 0;
 		$available = (!empty($_POST['available'])) ? 1 : 0;
-		if (!$this->ACL->turn(array($this->module, 'record_comments_management'), false))
-			$commented = 1;
-		if (!$this->ACL->turn(array($this->module, 'hide_material'), false))
-			$available = ($this->ACL->turn(array($this->module, 'need_check_materials'), false) ? 0 : 1);
 
 		// Проверяем, заполнены ли обязательные поля
 		$valobj = $this->Register['Validate'];  //validation data class
@@ -768,6 +772,8 @@ Class StatModule extends Module {
 			$this->showInfoMessage($_SESSION['FpsForm']['error'], $this->getModuleURL('add_form/'));
 		}
 
+        if (!$this->ACL->turn(array($this->module, 'record_comments_management'), false)) $commented = '1';
+        if (!$this->ACL->turn(array($this->module, 'hide_material'), false)) $available = '1';
 
 		// Защита от того, чтобы один пользователь не добавил
 		// 100 материалов за одну минуту
@@ -805,7 +811,7 @@ Class StatModule extends Module {
 			'premoder'      => 'confirmed',
 		);
 		if ($this->ACL->turn(array($this->module, 'materials_require_premoder'), false))
-			$res['premoder'] = 'nochecked';
+			$data['premoder'] = 'nochecked';
 		$className = $this->Register['ModManager']->getEntityName($this->module);
 		$entity = new $className($data);
 		if ($entity) {
@@ -831,7 +837,12 @@ Class StatModule extends Module {
 			$this->DB->cleanSqlCache();
 			if ($this->Log)
 				$this->Log->write('adding ' . $this->module, $this->module . ' id(' . $last_id . ')');
-			return $this->showInfoMessage(__('Material successfully added'), $this->getModuleURL('view/' . $last_id));
+
+            if ($this->ACL->turn(array($this->module, 'materials_require_premoder'), false)) {
+                return $this->showInfoMessage(__('Material will be available after validation'));
+            } else {
+                return $this->showInfoMessage(__('Material successfully added'), $this->getModuleURL('view/' . $last_id));
+            }
 		} else {
 			return $this->showInfoMessage(__('Some error occurred'), $this->getModuleURL());
 		}

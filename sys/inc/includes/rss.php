@@ -7,7 +7,7 @@ $cache_tags = array(
 );
 
 
-$check = Config::read('rss_' . $this->module, 'common');
+$check = Config::read('rss_' . $this->module, 'rss');
 if (!$check) {
 	$html = '<?xml version="1.0" encoding="UTF-8"?>';
 	$html .= '<rss version="2.0" />';
@@ -36,7 +36,7 @@ if (!$check) {
 			$themeModel->bindModel('last_author');
 			$records = $themeModel->getCollection(array(), 
 				array(
-					'limit' => Config::read('rss_cnt', 'common'),
+					'limit' => Config::read('rss_cnt', 'rss'),
 					'order' => 'last_post DESC',
 				)
 			);
@@ -49,7 +49,7 @@ if (!$check) {
 				$where['available'] = '1';
 			}
 			$records = $this->Model->getCollection($where, array(
-					'limit' => Config::read('rss_cnt', 'common'),
+					'limit' => Config::read('rss_cnt', 'rss'),
 					'order' => 'date DESC',
 				)
 			);
@@ -82,7 +82,7 @@ if (!$check) {
 					if ($this->module == 'foto') {
 						$announce = '<img src="' . $this->getFilesPath('preview/' . $record->getFilename()) . '" />';
 					} else {
-						$announce = $this->Textarier->getAnnounce($record->getMain(), null, 0, Config::read('rss_lenght', 'common'), $record);
+						$announce = $this->Textarier->getAnnounce($record->getMain(), null, 0, Config::read('rss_lenght', 'rss'), $record);
 						$atattaches = ($record->getAttaches() && count($record->getAttaches())) ? $record->getAttaches() : array();
 						if (count($atattaches) > 0) {
 							foreach ($atattaches as $attach) {

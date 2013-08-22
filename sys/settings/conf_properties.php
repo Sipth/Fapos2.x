@@ -316,7 +316,7 @@ $settingsInfo = array(
 	),
 
     /* COMMON */
-    'common' => array(
+    'rss' => array(
         'rss_lenght' => array(
             'type' => 'text',
             'title' => 'Максимальная длина анонса RSS',
@@ -640,11 +640,14 @@ $settingsInfo = array(
        	),
 	),
 );
+
+$settingsInfo['rss'] = array_merge($settingsInfo['rss'], $rss_modules);
+
 $sysMods = array(
 	'sys',
 	'hlu',
 	'secure',
-	'common',
+	'rss',
 	'sitemap',
 	'preview',
 	'watermark',

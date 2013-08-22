@@ -40,8 +40,8 @@ $set = array (
   'watermark_text_font' => 'Scada-Bold.ttf',
   'latest_on_home' => 
   array (
-    0 => 'news',
-    1 => 'stat',
+    'news' => 'news',
+    'stat' => 'stat',
   ),
   'cnt_latest_on_home' => '5',
   'announce_lenght' => 1000,
@@ -194,7 +194,7 @@ $set = array (
     'index_interval' => 2,
   ),
   'email_activate' => 1,
-  'common' => 
+  'rss' => 
   array (
     'rss_news' => 1,
     'rss_stat' => 1,
